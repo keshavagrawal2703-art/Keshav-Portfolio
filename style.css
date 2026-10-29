@@ -308,3 +308,45 @@ p,li{text-wrap:pretty}
   .case{position:relative;top:auto;break-inside:avoid}
   .hero{min-height:0}
 }
+
+
+/* ==========================================================
+   CURSOR STYLING AND POINTER MOVEMENT (mouse devices only)
+   JS adds .has-cursor after the first real mouse move, so
+   touch screens and reduced-motion users keep the normal cursor.
+   ========================================================== */
+.cur-dot,.cur-ring,.cur-tr{position:fixed;left:0;top:0;pointer-events:none;border-radius:50%;opacity:0;will-change:transform}
+.cur-dot{z-index:10001;width:8px;height:8px;margin:-4px 0 0 -4px;background:#fff;mix-blend-mode:difference}
+.cur-ring{z-index:10000;width:40px;height:40px;margin:-20px 0 0 -20px;border:1.5px solid #fff;mix-blend-mode:difference;
+  transition:width .25s,height .25s,margin .25s,background-color .25s,opacity .25s}
+.cur-ring.hov{width:76px;height:76px;margin:-38px 0 0 -38px;background:#fff}
+.cur-ring.down{width:26px;height:26px;margin:-13px 0 0 -13px}
+.cur-tr{z-index:9999;width:var(--s,10px);height:var(--s,10px);margin:calc(var(--s,10px) / -2) 0 0 calc(var(--s,10px) / -2);background:var(--c,#19C3D6);transition:opacity .3s}
+.has-cursor:not(.cur-out) .cur-dot,.has-cursor:not(.cur-out) .cur-ring{opacity:1}
+.has-cursor.trail-on:not(.cur-out) .cur-tr{opacity:.55}
+html.has-cursor,html.has-cursor a,html.has-cursor button,html.has-cursor .btn{cursor:none}
+
+/* Cursor spotlight that follows the mouse inside a section */
+.spot{position:relative}
+.spot::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity .4s;
+  background:radial-gradient(440px circle at var(--mx,50%) var(--my,40%),var(--spot,rgba(25,195,214,.28)),transparent 65%)}
+.spot.hovering::after{opacity:1}
+.results.spot{--spot:rgba(25,195,214,.2)}
+.contact.spot{--spot:rgba(255,255,255,.22)}
+.results>.wrap{position:relative;z-index:1}
+
+/* Hero layers drift with the cursor at different depths */
+.hero h1{translate:calc(var(--nx,0) * -16px) calc(var(--ny,0) * -10px)}
+.blob,.chip{translate:calc(var(--nx,0) * var(--pd,0) * 1px) calc(var(--ny,0) * var(--pd,0) * 1px)}
+.b1{--pd:-90}.b2{--pd:70}.b3{--pd:130}
+.c1{--pd:-36}.c2{--pd:30}
+
+/* Project cards: light follows the cursor, stat tiles lift */
+.case-in{position:relative;z-index:1}
+.case::after{content:"";position:absolute;inset:0;z-index:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .35s;
+  background:radial-gradient(360px circle at var(--cx,50%) var(--cy,50%),rgba(255,255,255,.34),transparent 62%)}
+.case:hover::after{opacity:1}
+.glance li{transition:translate .3s cubic-bezier(.2,.7,.2,1)}
+.glance li:hover{translate:0 -5px}
+.viz{transition:border-color .3s,translate .3s cubic-bezier(.2,.7,.2,1)}
+.viz:hover{border-color:rgba(234,242,245,.5);translate:0 -4px}
